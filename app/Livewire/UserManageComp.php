@@ -35,7 +35,7 @@ class UserManageComp extends Component
         if ($data->save()) {
             LivewireAlert::title('User berhasil dibuat!')->success()->show();
         } else {
-            LivewireAlert::title('User gagal dibuat!')->success()->show();
+            LivewireAlert::title('User gagal dibuat!')->error()->show();
         }
     }
     public function edit($id)
