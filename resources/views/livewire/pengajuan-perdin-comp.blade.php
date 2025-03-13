@@ -8,7 +8,7 @@
                 <ul class="flex flex-wrap -mb-px" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">
                         <button wire:click="$set('mode', 'new')"
-                            class="inline-block rounded-t-lg py-4 hover:text-blue-500 hover:border-b-3 px-4 text-sm text-center @if ($mode === 'new') text-blue-500 font-bold border-b-3 border-b-blue-500 @else text-gray-500 font-medium @endif">
+                            class="inline-block cursor-pointer rounded-t-lg py-4 hover:text-blue-500 hover:border-b-3 px-4 text-sm text-center @if ($mode === 'new') text-blue-500 font-bold border-b-3 border-b-blue-500 @else text-gray-500 font-medium @endif">
                             Pengajuan Baru
                             @if ($pendinCount > 0)
                                 <span
@@ -21,7 +21,7 @@
                     </li>
                     <li class="mr-2" role="presentation">
                         <button wire:click="$set('mode', 'history')"
-                            class="inline-block rounded-t-lg py-4 hover:text-blue-500 hover:border-b-3 px-4 text-sm text-center @if ($mode === 'history') text-blue-500 font-bold border-b-3 border-b-blue-500 @else text-gray-500 font-medium @endif">History
+                            class="inline-block cursor-pointer rounded-t-lg py-4 hover:text-blue-500 hover:border-b-3 px-4 text-sm text-center @if ($mode === 'history') text-blue-500 font-bold border-b-3 border-b-blue-500 @else text-gray-500 font-medium @endif">History
                             Pengajuan</button>
                     </li>
 

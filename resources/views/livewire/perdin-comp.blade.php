@@ -1,5 +1,5 @@
 <div>
-    <h3 class="text-lg font-semibold mb-3">Master Kota</h3>
+    <h3 class="text-lg font-semibold mb-3">PerdinKu</h3>
 
     <div class="bg-white w-full p-4 rounded-lg">
         <div class="w-full mx-auto">

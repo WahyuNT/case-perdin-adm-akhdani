@@ -20,7 +20,7 @@ class LoginComp extends Component
             } elseif (session('role') == 'pegawai') {
                 return redirect()->route('perdinku');
             } elseif (session('role') == 'sdm') {
-                return redirect()->route('sdm');
+                return redirect()->route('pengajuan-perdin');
             }
         }
     }
@@ -39,17 +39,21 @@ class LoginComp extends Component
         $user = User::where('username', $this->username)->first();
 
         if ($user && Hash::check($this->password, $user->password)) {
-            session(['username' => $user->username, 'role' => $user->role]);
+            session()->put([
+                'username' => $user->username,
+                'role' => $user->role
+            ]);
+
             session()->flash('success', 'Login Berhasil!');
-            if ($user->role == 'admin') {
-                return redirect()->route('manajemen-user');
-            } elseif ($user->role == 'pegawai') {
-                return redirect()->route('perdinku');
-            } elseif ($user->role == 'sdm') {
-                return redirect()->route('sdm');
-            }
+
+            return match ($user->role) {
+                'admin' => redirect()->route('manajemen-user'),
+                'pegawai' => redirect()->route('perdinku'),
+                'sdm' => redirect()->route('pengajuan-perdin'),
+            };
         }
 
-        session()->flash('error', 'Username atau password salah!');
+        session()->flash('error', 'Username atau password salah.');
+        return back();
     }
 }

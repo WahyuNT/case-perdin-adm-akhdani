@@ -15,6 +15,13 @@ class CityMasterComp extends Component
     public $editId;
     public $city_name, $latitude, $longitude, $province, $island, $is_abroad, $country;
 
+    public function mount()
+    {
+        $role = session('role');
+        if ($role == 'pegawai') {
+            return redirect()->route('perdinku');
+        }
+    }
     public function render()
     {
         $data = City::all();
@@ -55,7 +62,7 @@ class CityMasterComp extends Component
 
     public function edit($id)
     {
-        $data = City::findOrFail($id);
+        $data = City::where('id', $id)->first();
         $this->mode = 'edit';
         $this->editId = $id;
 
@@ -85,7 +92,7 @@ class CityMasterComp extends Component
 
         $this->validate($rules);
 
-        $data = City::findOrFail($this->editId);
+        $data = City::where('id', $this->editId)->first();
         $data->city_name = $this->city_name;
         $data->latitude = $this->latitude;
         $data->longitude = $this->longitude;
@@ -104,7 +111,7 @@ class CityMasterComp extends Component
 
     public function delete($id)
     {
-        $data = City::findOrFail($id);
+        $data = City::where('id', $id)->first();
         if ($data->delete()) {
             $this->alert('success', 'Data berhasil dihapus!');
         } else {

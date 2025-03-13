@@ -14,12 +14,20 @@ class PengajuanPerdinComp extends Component
     public $mode = 'new';
     public $dailyAllowance;
     public $dailyAllowanceDesc;
+
+    public function mount()
+    {
+        $role = session('role');
+        if ($role == 'pegawai') {
+            return redirect()->route('perdinku');
+        }
+    }
     public function render()
     {
         $pending = BusinessTrip::where('status', 'pending')->orderby('created_at', 'desc')->get();
         $history = BusinessTrip::where('status', '!=', 'pending')->orderby('created_at', 'desc')->get();
         $pendinCount = $pending->count();
-        $this->detail = BusinessTrip::find($this->showId);
+        $this->detail = BusinessTrip::where('id', $this->showId)->first();
         if ($this->detail) {
             $this->calculateAlowance();
         }
@@ -32,7 +40,7 @@ class PengajuanPerdinComp extends Component
 
     public function approve($id)
     {
-        $data = BusinessTrip::find($id);
+        $data = BusinessTrip::where('id', $id)->first();
         $data->status = 'approved';
         if ($data->save()) {
             $this->dispatch('closeModal');
@@ -44,7 +52,7 @@ class PengajuanPerdinComp extends Component
 
     public function reject($id)
     {
-        $data = BusinessTrip::find($id);
+        $data = BusinessTrip::where('id', $id)->first();
         $data->status = 'rejected';
         if ($data->save()) {
             $this->dispatch('closeModal');
@@ -67,7 +75,7 @@ class PengajuanPerdinComp extends Component
                 $this->dailyAllowanceDesc = '> 60 km, satu provinsi';
             } elseif (strtolower($this->detail->originCity->island) == strtolower($this->detail->destinationCity->island)) {
                 $this->dailyAllowance = 250000;
-                  $this->dailyAllowanceDesc = '> 60 km, satu pulau';
+                $this->dailyAllowanceDesc = '> 60 km, satu pulau';
             } else {
                 $this->dailyAllowance = 300000;
                 $this->dailyAllowanceDesc = '> 60 km, beda pulau';

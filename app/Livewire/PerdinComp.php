@@ -21,7 +21,13 @@ class PerdinComp extends Component
     public $distance = null;
     public $total_allowance = null;
 
-
+    public function mount()
+    {
+        $role = session('role');
+        if ($role == 'sdm') {
+            return redirect()->route('pengajuan-perdin');
+        }
+    }
     public function render()
     {
         $user = User::where('username', session('username'))->first();

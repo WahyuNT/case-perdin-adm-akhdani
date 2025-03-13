@@ -14,6 +14,13 @@ class UserManageComp extends Component
     public $mode = 'view';
     public $username, $role, $password, $editId;
 
+    public function mount()
+    {
+        $role = session('role');
+        if ($role != 'admin') {
+            return redirect()->route('perdinku');
+        }
+    }
     public function render()
     {
         $data = User::all();
@@ -34,17 +41,19 @@ class UserManageComp extends Component
 
         if ($data->save()) {
             LivewireAlert::title('User berhasil dibuat!')->success()->show();
+            $this->resetInput();
         } else {
             LivewireAlert::title('User gagal dibuat!')->error()->show();
         }
     }
     public function edit($id)
     {
-        $data = User::find($id)->first();
+        $data = User::where('id', $id)->first();
         $this->mode = 'edit';
         $this->username = $data->username;
         $this->role = $data->role;
         $this->editId = $id;
+       
     }
     public function storeEdit()
     {
@@ -53,12 +62,13 @@ class UserManageComp extends Component
             'role' => 'required',
         ]);
 
-        $data = User::find($this->editId)->first();
+        $data = User::where('id', $this->editId)->first();
         $data->username = $this->username;
         $data->role = $this->role;
         if ($this->password) {
             $data->password = Hash::make($this->password);
         }
+    
 
         if ($data->save()) {
             LivewireAlert::title('User berhasil diubah!')->success()->show();
@@ -70,7 +80,7 @@ class UserManageComp extends Component
 
     public function delete($id)
     {
-        $data = User::find($id)->first();
+        $data = User::where('id', $id)->first();
         if ($data->delete()) {
             LivewireAlert::title('Data berhasil dihapus!')->success()->show();
         } else {
