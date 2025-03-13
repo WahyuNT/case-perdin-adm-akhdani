@@ -1,0 +1,236 @@
+<div>
+    <h3 class="text-lg font-semibold mb-3">Master Kota</h3>
+
+    <div class="bg-white w-full p-4 rounded-lg">
+        <div class="w-full mx-auto">
+            @if ($mode == 'view')
+
+                <div class="relative overflow-x-auto">
+                    <div class="flex justify-end">
+                        <button wire:click="$set('mode', 'add')"
+                            class="border cursor-pointer border-blue-500 hover:bg-blue-700 hover:text-white text-blue-500 font-bold py-3 px-4 rounded-lg mb-4">
+                            + Tambah Kota
+                        </button>
+                    </div>
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-200 ">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    #
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nama Kota
+                                </th>
+
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Provinsi
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Pulau
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Luar Negri
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Latitude
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Longitude
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Aksi
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($data as $item)
+                                <tr class="bg-white border-b  border-gray-200  ">
+
+                                    <td class="px-6 py-4 align-top">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-6 py-4 align-top ">
+                                        {{ $item->city_name }}
+                                    </td>
+                                    <td class="px-6 py-4 align-top text-center ">
+                                        {{ $item->province }}
+                                    </td>
+                                    <td class="px-6 py-4 align-top text-center">
+                                        {{ $item->island }}
+                                    </td>
+                                    <td class="px-6 py-4 align-top text-center ">
+                                        @if ($item->is_abroad == 0)
+                                            Tidak
+                                        @else
+                                            {{ $item->country }}
+                                        @endif
+
+                                    </td>
+                                    <td class="px-6 py-4 align-top text-center">
+                                        {{ $item->latitude }}
+                                    </td>
+                                    <td class="px-6 py-4 align-top text-center ">
+                                        {{ $item->longitude }}
+                                    </td>
+
+
+                                    <td class="px-6 py-4 align-top  text-center">
+                                        <div class="flex  justify-center">
+                                            @if ($confirmDelete != null && $confirmDelete == $item->id)
+                                                <div class="flex flex-col">
+
+                                                    <small class="text-[13px]">Apa anda yakin?</small>
+                                                    <div class="div">
+                                                        <button wire:click="$set('confirmDelete', null)"
+                                                            class=" px-2 text-[10px] text-white  cursor-pointer bg-blue-500 hover:text-white-500 hover:bg-blue-600 rounded-full p-1">
+                                                            Batal
+                                                        </button>
+                                                        <button wire:click="delete({{ $item->id }})"
+                                                            class=" px-2 text-[10px] text-white cursor-pointer bg-red-500 hover:text-white-500 hover:bg-red-600 rounded-full p-1">
+                                                            Hapus
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <button wire:click="edit({{ $item->id }})"
+                                                    class="text-blue-400 cursor-pointer hover:text-blue-500 hover:bg-gray-200 rounded-full p-1 hover:scale-110 ">
+                                                    <i class="fa-solid fa-pencil "></i>
+                                                </button>
+                                                <button type="button"
+                                                    wire:click="$set('confirmDelete', {{ $item->id }})"
+                                                    class="text-red-400 cursor-pointer hover:text-red-500 hover:bg-gray-200 rounded-full  hover:scale-110 p-1">
+                                                    <i class="fa-solid fa-trash "></i>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            @empty
+                            @endforelse
+
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="div">
+                    <div class="flex justify-between items-center">
+                        <div class="div">
+                            <button type="button" wire:click="resetInput"
+                                class=" cursor-pointer text-blue-500 hover:bg-blue-700 border-2 hover:text-white border-blue-500 focus:ring-4 focus:outline-none hover:shadow-sm font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 ">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <span class="sr-only">Icon description</span>
+                            </button>
+                        </div>
+                        <h1 class="text-2xl font-bold text-center">Buat Akun</h1>
+                        <div class="">
+
+                        </div>
+                    </div>
+                    <div class="flex">
+
+                        <div class="w-1/2 pe-2">
+
+                            <div class="mb-3 w-full mt-3">
+                                <label for="city_name" class="text-sm text-gray-500">Nama Kota</label>
+                                <input id="city_name" wire:model.defer="city_name" type="text"
+                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
+                                    placeholder="Nama Kota">
+                                @error('city_name')
+                                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 w-full mt-3">
+                                <label for="latitude" class="text-sm text-gray-500">Latitude</label>
+                                <input id="latitude" wire:model.defer="latitude" type="text"
+                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
+                                    placeholder="Latitude">
+                                @error('latitude')
+                                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 w-full mt-3">
+                                <label for="longitude" class="text-sm text-gray-500">Longitude</label>
+                                <input id="longitude" wire:model.defer="longitude" type="text"
+                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
+                                    placeholder="Longitude">
+                                @error('longitude')
+                                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 w-full mt-3">
+                                <label for="province" class="text-sm text-gray-500">Provinsi</label>
+                                <input id="province" wire:model.defer="province" type="text"
+                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
+                                    placeholder="Provinsi">
+                                @error('province')
+                                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="w-1/2">
+
+                            <div class="mb-3 w-full mt-3">
+                                <label for="island" class="text-sm text-gray-500">Pulau</label>
+                                <input id="island" wire:model.defer="island" type="text"
+                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
+                                    placeholder="Pulau">
+                                @error('island')
+                                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 w-full mt-3">
+                                <label for="is_abroad" class="text-sm text-gray-500">Luar Negri</label>
+                                <select id="is_abroad" wire:model.change="is_abroad"
+                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300">
+                                    <option value="">Apakah Luar Negri</option>
+                                    <option value="1">Ya</option>
+                                    <option value="0">Tidak</option>
+                                </select>
+                                @error('is_abroad')
+                                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            @if ($is_abroad == 1)
+                                <div class="mb-3 w-full mt-3">
+                                    <label for="country" class="text-sm text-gray-500">Negara</label>
+                                    <input id="country" wire:model.defer="country" type="text"
+                                        class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
+                                        placeholder="Negara">
+                                    @error('country')
+                                        <div class="text-red-500 text-sm">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="flex justify-start">
+                        @if ($mode == 'edit')
+                            <button wire:click="storeEdit"
+                                class="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded-lg">Perbarui
+                                Akun</button>
+                        @else
+                            <button wire:click="storeCreate"
+                                class="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded-lg">Tambah Akun</button>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

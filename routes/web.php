@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Livewire\CityMasterComp;
 use App\Livewire\LoginComp;
+use App\Livewire\PerdinComp;
+use App\Livewire\UserManageComp;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,20 +18,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/perdinku', function () {
-    return view('perdinku');
-})->name('perdinku');
+
 Route::get('/sdm', function () {
     return view('sdm');
 })->name('sdm');
-Route::get('/manajemen-user', function () {
-    return view('manajemen-user');
-})->name('manajemen-user');
 
+
+Route::get('/perdinku', PerdinComp::class)->name('perdinku');
+Route::get('/manajemen-user', UserManageComp::class)->name('manajemen-user');
+Route::get('/master-kota', CityMasterComp::class)->name('master-kota');
 
 
 Route::get('/login', LoginComp::class)->name('login');
 Route::get('/logout', function () {
-    session()->flush(); // Hapus session
+    session()->flush();
     return redirect()->route('login')->with('success', 'Logout berhasil!');
 })->name('logout');

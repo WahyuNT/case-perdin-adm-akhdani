@@ -16,6 +16,16 @@
                     <span class="ms-2 ">PerdinKu</span>
                 </a>
             </a>
+            <a href="{{ route('perdinku') }}" class="mb-3">
+
+                <a href="#"
+                    class="flex items-center ps-5 px-4 py-2 border-r-3 border-blue-500 bg-blue-100 hover:bg-blue-200 text-blue-500">
+
+                    <i class='bx bx-layer'></i>
+
+                    <span class="ms-2 ">Master Kota</span>
+                </a>
+            </a>
             <div class="mb-3">
 
                 <small class="ps-5 text-gray-500">USER</small>

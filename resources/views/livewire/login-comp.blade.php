@@ -15,7 +15,6 @@
             </div>
             <div class=" flex-col p-5 flex justify-center pt-0">
                 <div class="mb-3 w-full">
-
                     <input wire:model.defer="username" type="text"
                         class=" bg-gray-100 w-full p-2 mt-2 rounded-lg focus:outline-gray-300" placeholder="Username">
                     @error('username')
