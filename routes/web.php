@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Livewire\LoginComp;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/login', function () {
-    return view('login');
-});
+Route::get('/perdinku', function () {
+    return view('perdinku');
+})->name('perdinku');
+Route::get('/sdm', function () {
+    return view('sdm');
+})->name('sdm');
+Route::get('/manajemen-user', function () {
+    return view('manajemen-user');
+})->name('manajemen-user');
+
+
+
+Route::get('/login', LoginComp::class)->name('login');
+Route::get('/logout', function () {
+    session()->flush(); // Hapus session
+    return redirect()->route('login')->with('success', 'Logout berhasil!');
+})->name('logout');
