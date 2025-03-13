@@ -28,7 +28,6 @@ class PerdinComp extends Component
         $city = City::all();
         $data = BusinessTrip::where('user_id', $user->id)->orderby('created_at', 'asc')->get();
 
-
         return view('livewire.perdin-comp', compact('data', 'city'))->extends('layouts.master');
     }
 
@@ -132,6 +131,7 @@ class PerdinComp extends Component
 
     public function store()
     {
+
         $rules = [
             'departure_date' => 'required|date',
             'return_date' => 'required|date|after_or_equal:departure_date',
@@ -158,7 +158,9 @@ class PerdinComp extends Component
 
 
         if ($data->save()) {
+            $this->dispatch('closeModal');
             LivewireAlert::title('Perjalanan Dinas berhasil dibuat!')->success()->show();
+
             $this->resetInput();
         } else {
             LivewireAlert::title('Perjalanan Dinas gagal dibuat!')->error()->show();
