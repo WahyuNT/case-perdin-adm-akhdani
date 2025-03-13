@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('business_trip', function (Blueprint $table) {
-          
+
 
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('trip_duration')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->integer('total_allowance')->nullable();
+            $table->integer('distance')->nullable();
             $table->timestamps();
         });
     }

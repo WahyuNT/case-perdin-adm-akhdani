@@ -47,10 +47,10 @@
                                     {{ $item->destinationCity->city_name }}
                                 </td>
                                 <td class="px-6 py-4 align-top text-center ">
-                                    {{ $item->departure_date }} <i class="fa-solid fa-arrow-right"></i>
-                                    {{ $item->return_date }} <span class="font-light">({{ $item->trip_duration }}
-                                        Hari)
-                                    </span>
+                                    {{ \Carbon\Carbon::parse($item->departure_date)->format('d M') }} -
+                                    {{ \Carbon\Carbon::parse($item->return_date)->format('d M Y') }}
+                                    <span class="text-gray-400 text-light"> ({{ $item->trip_duration }}
+                                        Hari)</span>
 
                                 </td>
                                 <td class="px-6 py-4 align-top text-start text-ellipsis max-w-80">

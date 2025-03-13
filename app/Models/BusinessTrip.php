@@ -9,7 +9,7 @@ class BusinessTrip extends Model
 {
     use HasFactory;
     protected $table = 'business_trip';
-    protected $fillable = ['user_id', 'purpose_destination', 'departure_date', 'return_date', 'origin_city_id', 'destination_city_id', 'trip_duration', 'status', 'total_allowance'];
+    protected $fillable = ['user_id', 'purpose_destination', 'departure_date', 'return_date', 'origin_city_id', 'destination_city_id', 'trip_duration', 'status', 'total_allowance','distance'];
 
     public function user()
     {

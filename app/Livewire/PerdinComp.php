@@ -112,14 +112,13 @@ class PerdinComp extends Component
         $departure = City::where('id', $this->origin_city_id)->first();
         $return = City::where('id', $this->destination_city_id)->first();
         if ($departure->is_abroad == 1 || $return->is_abroad == 1) {
-
             $this->total_allowance = 50;
         } else {
             if ($this->distance <= 60) {
                 $this->total_allowance = 0;
-            } elseif ($departure->province == $return->province) {
+            } elseif (strtolower($departure->province) == strtolower($return->province)) {
                 $this->total_allowance = 200000;
-            } elseif ($departure->island == $return->island) {
+            } elseif (strtolower($departure->island) == strtolower($return->island)) {
                 $this->total_allowance = 250000;
             } else {
                 $this->total_allowance = 300000;
@@ -152,6 +151,7 @@ class PerdinComp extends Component
         $data->trip_duration = $this->trip_duration;
         $data->user_id = User::where('username', session('username'))->first()->id;
         $data->status = 'pending';
+        $data->distance = $this->distance;
         $data->total_allowance = $this->total_allowance;
 
 

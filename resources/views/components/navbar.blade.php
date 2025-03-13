@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between h-16 bg-white border-b border-gray-200">
+<div class="flex items-center justify-between py-4 bg-white border-b border-gray-200 top-0 ">
     <div class="flex items-center px-4">
 
     </div>
