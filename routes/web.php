@@ -28,6 +28,7 @@ Route::get('/master-kota', CityMasterComp::class)->name('master-kota');
 Route::get('/pengajuan-perdin', PengajuanPerdinComp::class)->name('pengajuan-perdin');
 
 
+Route::redirect('/', '/login')->name('index');
 Route::get('/login', LoginComp::class)->name('login');
 Route::get('/logout', function () {
     session()->flush();

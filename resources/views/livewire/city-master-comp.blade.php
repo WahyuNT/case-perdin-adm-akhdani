@@ -128,83 +128,68 @@
 
                         </div>
                     </div>
+
                     <div class="flex">
 
                         <div class="w-1/2 pe-2">
 
                             <div class="mb-3 w-full mt-3">
-                                <label for="city_name" class="text-sm text-gray-500">Nama Kota</label>
-                                <input id="city_name" wire:model.defer="city_name" type="text"
-                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
-                                    placeholder="Nama Kota">
-                                @error('city_name')
-                                    <div class="text-red-500 text-sm">{{ $message }}</div>
-                                @enderror
-                            </div>
 
-                            <div class="mb-3 w-full mt-3">
-                                <label for="latitude" class="text-sm text-gray-500">Latitude</label>
-                                <input id="latitude" wire:model.defer="latitude" type="text"
-                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
-                                    placeholder="Latitude">
-                                @error('latitude')
-                                    <div class="text-red-500 text-sm">{{ $message }}</div>
-                                @enderror
+                                <x-input inputId="city_name" label="Nama Kota" type="text" wireModel="city_name"
+                                    placeholder="Masukkan Nama Kota" />
                             </div>
-
                             <div class="mb-3 w-full mt-3">
-                                <label for="longitude" class="text-sm text-gray-500">Longitude</label>
-                                <input id="longitude" wire:model.defer="longitude" type="text"
-                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
-                                    placeholder="Longitude">
-                                @error('longitude')
-                                    <div class="text-red-500 text-sm">{{ $message }}</div>
-                                @enderror
+                                <x-input inputId="province" label="Provinsi" type="text" wireModel="province"
+                                    placeholder="Masukkan Nama Provinsi" />
                             </div>
-
                             <div class="mb-3 w-full mt-3">
-                                <label for="province" class="text-sm text-gray-500">Provinsi</label>
-                                <input id="province" wire:model.defer="province" type="text"
-                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
-                                    placeholder="Provinsi">
-                                @error('province')
-                                    <div class="text-red-500 text-sm">{{ $message }}</div>
-                                @enderror
+                                <x-input inputId="island" label="Pulau" type="text" wireModel="island"
+                                    placeholder="Masukkan Nama Pulau" />
                             </div>
                         </div>
                         <div class="w-1/2">
 
-                            <div class="mb-3 w-full mt-3">
-                                <label for="island" class="text-sm text-gray-500">Pulau</label>
-                                <input id="island" wire:model.defer="island" type="text"
-                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
-                                    placeholder="Pulau">
-                                @error('island')
-                                    <div class="text-red-500 text-sm">{{ $message }}</div>
-                                @enderror
-                            </div>
+
 
                             <div class="mb-3 w-full mt-3">
-                                <label for="is_abroad" class="text-sm text-gray-500">Luar Negri</label>
-                                <select id="is_abroad" wire:model.change="is_abroad"
-                                    class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300">
-                                    <option value="">Apakah Luar Negri</option>
-                                    <option value="1">Ya</option>
-                                    <option value="0">Tidak</option>
-                                </select>
-                                @error('is_abroad')
-                                    <div class="text-red-500 text-sm">{{ $message }}</div>
-                                @enderror
+                                <x-select selectId="is_abroad" label="Luar Negeri" wireModel="is_abroad"
+                                    placeholder="Apakah Luar Negeri" :options="[
+                                        '0' => 'Ya',
+                                        '1' => 'Tidak',
+                                    ]" />
                             </div>
                             @if ($is_abroad == 1)
                                 <div class="mb-3 w-full mt-3">
-                                    <label for="country" class="text-sm text-gray-500">Negara</label>
-                                    <input id="country" wire:model.defer="country" type="text"
-                                        class="bg-gray-100 w-full p-2 mt-1 rounded-lg focus:outline-gray-300"
-                                        placeholder="Negara">
-                                    @error('country')
-                                        <div class="text-red-500 text-sm">{{ $message }}</div>
-                                    @enderror
+
+
+                                    <x-input inputId="country" label="Negara" type="text" wireModel="country"
+                                        placeholder="Masukkan Nama Negara" />
+                                </div>
+                            @endif
+                            <div class="mb-3 w-full mt-3 flex">
+                                <div class="mb-3 w-full  pe-3">
+
+
+                                    <x-input inputId="latitude" label="Latitude" type="text" wireModel="latitude"
+                                        placeholder="Masukkan Latitude" />
+                                </div>
+
+                                <div class="mb-3 w-full ">
+                                    <x-input inputId="longitude" label="Longitude" type="text"
+                                        wireModel="longitude" placeholder="Masukkan Longitude" />
+                                </div>
+
+                            </div>
+                            @if ($latitude != null && $longitude != null)
+                                <div class="mb-3 w-full mt-3">
+
+                                    <iframe class="rounded-lg" width="600" height="300" frameborder="0"
+                                        src="https://www.openstreetmap.org/export/embed.html?bbox={{ is_numeric($longitude) ? $longitude - 0.01 : 0 }},{{ is_numeric($latitude) ? $latitude - 0.01 : 0 }},
+                                     {{ is_numeric($longitude) ? $longitude + 0.01 : 0 }},{{ is_numeric($latitude) ? $latitude + 0.01 : 0 }}&layer=mapnik&marker={{ is_numeric($latitude) ? $latitude : 0 }},{{ is_numeric($longitude) ? $longitude : 0 }}">
+                                    </iframe>
+
+
+
                                 </div>
                             @endif
                         </div>

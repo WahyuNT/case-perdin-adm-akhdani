@@ -106,13 +106,8 @@
                         </div>
                     </div>
                     <div class="mb-3 w-full mt-3">
-                        <label for="username" class="text-sm text-gray-500">Username</label>
-                        <input id="username" wire:model.defer="username" type="text"
-                            class=" bg-gray-100 w-full border-0 p-2 mt-1 rounded-lg focus:outline-gray-300"
-                            placeholder="Username">
-                        @error('username')
-                            <div class="text-red-500 text-sm">{{ $message }}</div>
-                        @enderror
+                        <x-input inputId="username" label="Username" type="text" wireModel="username"
+                            placeholder="Masukkan Username" />
                     </div>
                     <div class="mb-3 w-full">
                         <label for="password" class="text-sm text-gray-500">Password</label>
@@ -138,17 +133,14 @@
                     </div>
                     <div class="mb-3 w-full">
 
-                        <label for="role" class="text-sm text-gray-500">Role</label>
-                        <select wire:model.change="role" id="role"
-                            class="border-0 bg-gray-100 text-sm w-full p-2 mt-1 rounded-lg focus:outline-gray-300">
-                            <option selected>Pilih Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="sdm">SDM</option>
-                            <option value="pegawai">Pegawai</option>
-                        </select>
-                        @error('role')
-                            <div class="text-red-500 text-sm">{{ $message }}</div>
-                        @enderror
+                  
+                        <x-select selectId="role" label="Role" wireModel="role" placeholder="Pilih Role"
+                            :options="[
+                                'admin' => 'Admin',
+                                'sdm' => 'SDM',
+                                'pegawai' => 'Pegawai',
+                            ]" />
+
                     </div>
 
                     <div class="flex justify-start">

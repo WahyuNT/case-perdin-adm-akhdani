@@ -38,10 +38,11 @@ class CityMasterComp extends Component
             'island' => 'required',
             'is_abroad' => 'required',
         ];
-
+        
         if ($this->is_abroad == 1) {
             $rules['country'] = 'required';
         }
+        $this->validate($rules);
 
         $data = new City();
         $data->city_name = $this->city_name;
