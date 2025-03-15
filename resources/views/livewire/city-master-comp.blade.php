@@ -8,7 +8,7 @@
                 <div class="relative overflow-x-auto">
                     <div class="flex justify-end">
                         <button wire:click="$set('mode', 'add')"
-                            class="border cursor-pointer border-blue-500 hover:bg-blue-700 hover:text-white text-blue-500 font-bold py-3 px-4 rounded-lg mb-4">
+                            class="border cursor-pointer border-blue-500 hover:bg-blue-700 hover:text-white text-blue-500 font-bold py-3 px-4 rounded-lg mb-4 active:scale-105 transition duration-150 ease-in-out">
                             + Tambah Kota
                         </button>
                     </div>
@@ -118,7 +118,7 @@
                     <div class="flex justify-between items-center">
                         <div class="div">
                             <button type="button" wire:click="resetInput"
-                                class=" cursor-pointer text-blue-500 hover:bg-blue-700 border-2 hover:text-white border-blue-500 focus:ring-4 focus:outline-none hover:shadow-sm font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 ">
+                                class=" cursor-pointer text-blue-500 hover:bg-blue-700 border-2 hover:text-white border-blue-500 focus:ring-4 focus:outline-none hover:shadow-sm font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 active:scale-110 transition duration-150 ease-in-out">
                                 <i class="fa-solid fa-arrow-left"></i>
                                 <span class="sr-only">Icon description</span>
                             </button>
@@ -137,16 +137,16 @@
 
                             <div class="mb-3 w-full mt-3 flex-col flex ">
                                 <label for="searchMaps" class="text-sm text-gray-500">Kota</label>
-                                <div class="relative flex w-full items-center">
+                                <div class="relative flex w-full items-start">
 
                                     <div class="w-full">
 
-                                        <x-input typeWire="defer" inputId="city_name" label="" type="text"
-                                            wireModel="city_name" placeholder="Masukkan Nama Kota" />
+                                        <x-input symbol="*" typeWire="defer" inputId="city_name" label=""
+                                            type="text" wireModel="city_name" placeholder="Masukkan Nama Kota" />
                                     </div>
                                     <div class="absolute right-1 mt-1">
                                         <button wire:click="searchMaps"
-                                            class="bg-white border-1 rounded-lg  cursor-pointer border-gray-300 text-black text-xs p-2 hover:bg-gray-100 active::bg-gray-500 active:scale-105  ">Cari</button>
+                                            class="bg-white border-1 rounded-lg mt-[3px]  cursor-pointer border-gray-300 text-black text-xs p-2 hover:bg-gray-100 active::bg-gray-500 active:scale-105  ">Cari</button>
                                     </div>
                                 </div>
                             </div>
@@ -187,12 +187,12 @@
                             </div>
 
                             <div class="mb-3 w-full mt-3">
-                                <x-input typeWire="defer" inputId="province" label="Provinsi" type="text"
-                                    wireModel="province" placeholder="Masukkan Nama Provinsi" />
+                                <x-input symbol="*" typeWire="defer" inputId="province" label="Provinsi"
+                                    type="text" wireModel="province" placeholder="Masukkan Nama Provinsi" />
                             </div>
                             <div class="mb-3 w-full mt-3">
-                                <x-input typeWire="defer" inputId="island" label="Pulau" type="text"
-                                    wireModel="island" placeholder="Masukkan Nama Pulau" />
+                                <x-input symbol="" typeWire="defer" inputId="island" label="Pulau"
+                                    type="text" wireModel="island" placeholder="Masukkan Nama Pulau" />
                             </div>
                         </div>
                         <div class="w-1/2">
@@ -200,8 +200,8 @@
 
 
                             <div class="mb-3 w-full mt-3">
-                                <x-select selectId="is_abroad" label="Luar Negeri" wireModel="is_abroad"
-                                    placeholder="Apakah Luar Negeri" :options="[
+                                <x-select symbol="*" selectId="is_abroad" label="Luar Negeri"
+                                    wireModel="is_abroad" placeholder="Apakah Luar Negeri" :options="[
                                         '1' => 'Ya',
                                         '0' => 'Tidak',
                                     ]" />
@@ -210,21 +210,21 @@
                                 <div class="mb-3 w-full mt-3">
 
 
-                                    <x-input typeWire="defer" inputId="country" label="Negara" type="text"
-                                        wireModel="country" placeholder="Masukkan Nama Negara" />
+                                    <x-input symbol="*" typeWire="defer" inputId="country" label="Negara"
+                                        type="text" wireModel="country" placeholder="Masukkan Nama Negara" />
                                 </div>
                             @endif
                             <div class="mb-3 w-full mt-3 flex">
                                 <div class="mb-3 w-full  pe-3">
 
 
-                                    <x-input typeWire="live" inputId="latitude" label="Latitude" type="text"
-                                        wireModel="latitude" placeholder="Masukkan Latitude" />
+                                    <x-input symbol="*" typeWire="live" inputId="latitude" label="Latitude"
+                                        type="text" wireModel="latitude" placeholder="Masukkan Latitude" />
                                 </div>
 
                                 <div class="mb-3 w-full ">
-                                    <x-input typeWire="live" inputId="longitude" label="Longitude" type="text"
-                                        wireModel="longitude" placeholder="Masukkan Longitude" />
+                                    <x-input symbol="*" typeWire="live" inputId="longitude" label="Longitude"
+                                        type="text" wireModel="longitude" placeholder="Masukkan Longitude" />
                                 </div>
 
                             </div>
@@ -247,14 +247,10 @@
 
 
                     <div class="flex justify-start">
-                        @if ($mode == 'edit')
-                            <button wire:click="storeEdit"
-                                class="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded-lg">Perbarui
-                                Akun</button>
-                        @else
-                            <button wire:click="storeCreate"
-                                class="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded-lg">Tambah Akun</button>
-                        @endif
+                        <button wire:click="{{ $mode == 'edit' ? 'storeEdit' : 'storeCreate' }}"
+                            class="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded-lg active:scale-110 transition duration-150 ease-in-out">
+                            {{ $mode == 'edit' ? 'Perbarui Akun' : 'Tambah Akun' }}
+                        </button>
                     </div>
                 </div>
             @endif

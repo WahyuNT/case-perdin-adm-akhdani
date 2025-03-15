@@ -11,20 +11,33 @@ use Illuminate\Support\Facades\Http;
 class CityMasterComp extends Component
 {
     public $confirmDelete = null;
-    public $mode = 'add';
+    public $mode = 'view';
     public $editId;
     public $listMaps = [];
     public $listMapsError = null;
     public $city_name, $latitude, $longitude, $province, $island, $is_abroad, $country;
 
+    protected array $rules = [
+        'city_name' => 'required',
+        'latitude' => 'required',
+        'longitude' => 'required',
+        'province' => 'required',
+        'is_abroad' => 'required',
+    ];
 
+    protected array $messages = [
+        'city_name.required' => 'Nama kota wajib diisi.',
+        'latitude.required' => 'Latitude wajib diisi.',
+        'longitude.required' => 'Longitude wajib diisi.',
+        'province.required' => 'Provinsi wajib diisi.',
+
+        'is_abroad.required' => 'Status luar negeri wajib diisi.',
+        'country.required' => 'Negara wajib diisi jika kota berada di luar negeri.',
+    ];
 
     public function render()
     {
         $data = City::all();
-
-
-
         return view('livewire.city-master-comp', compact('data'))->extends('layouts.master');
     }
     public function searchMaps()
@@ -71,23 +84,17 @@ class CityMasterComp extends Component
         $this->province = $responseApi->json()['address']['state'] ?? null;
         $this->is_abroad = ($responseApi->json()['address']['country'] ?? null) == 'Indonesia' ? 0 : 1;
         $this->reset('listMaps', 'listMapsError');
+        $this->resetValidation();
     }
 
     public function storeCreate()
     {
-        $rules = [
-            'city_name' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
-            'province' => 'required',
-            'island' => 'required',
-            'is_abroad' => 'required',
-        ];
 
-        if ($this->is_abroad == 1) {
-            $rules['country'] = 'required';
-        }
-        $this->validate($rules);
+
+        $this->validate($this->rules, $this->messages);
+
+
+
 
         $data = new City();
         $data->city_name = $this->city_name;
@@ -123,20 +130,7 @@ class CityMasterComp extends Component
 
     public function storeEdit()
     {
-        $rules = [
-            'city_name' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
-            'province' => 'required',
-            'island' => 'required',
-            'is_abroad' => 'required',
-        ];
-
-        if ($this->is_abroad == 1) {
-            $rules['country'] = 'required';
-        }
-
-        $this->validate($rules);
+        $this->validate($this->rules, $this->messages);
 
         $data = City::where('id', $this->editId)->first();
         $data->city_name = $this->city_name;

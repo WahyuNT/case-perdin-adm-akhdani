@@ -1,6 +1,7 @@
-@props(['selectId', 'label' => '', 'wireModel', 'options' => [], 'placeholder' => 'Pilih opsi'])
 
-<label for="{{ $selectId }}" class="text-sm text-gray-500">{{ $label }}</label>
+
+<label for="{{ $selectId }}" class="text-sm text-gray-500">{{ $label }}<span
+        class="text-red-500 text-lg">{{ $symbol }}</span></label>
 <select id="{{ $selectId }}" wire:model.change="{{ $wireModel }}"
     class="border-0 bg-gray-100 text-sm w-full p-2 mt-1 rounded-lg focus:outline-gray-300">
     <option selected value="#">{{ $placeholder }}</option>

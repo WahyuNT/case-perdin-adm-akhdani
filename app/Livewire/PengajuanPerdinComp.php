@@ -5,10 +5,11 @@ namespace App\Livewire;
 use App\Models\BusinessTrip;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
-
+use Livewire\WithPagination;
 
 class PengajuanPerdinComp extends Component
 {
+    use WithPagination;
     public $showId;
     public $detail = null;
     public $mode = 'new';
@@ -18,16 +19,25 @@ class PengajuanPerdinComp extends Component
 
     public function render()
     {
-        $pending = BusinessTrip::where('status', 'pending')->orderby('created_at', 'desc')->get();
-        $history = BusinessTrip::where('status', '!=', 'pending')->orderby('created_at', 'desc')->get();
-        $pendinCount = $pending->count();
+        if ($this->mode == 'new') {
+            $data = BusinessTrip::where('status', 'pending')
+                ->orderBy('created_at', 'desc')
+                ->paginate(8);
+        } else {
+            $data = BusinessTrip::whereIn('status', ['approved', 'rejected'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(8);
+        }
+
+        $pendingCount = $data->count();
+
         $this->detail = BusinessTrip::where('id', $this->showId)->first();
         if ($this->detail) {
             $this->calculateAlowance();
         }
 
 
-        return view('livewire.pengajuan-perdin-comp', compact('pending', 'history', 'pendinCount'))->extends('layouts.master');
+        return view('livewire.pengajuan-perdin-comp', compact('data', 'pendingCount'))->extends('layouts.master');
     }
 
 
@@ -38,9 +48,9 @@ class PengajuanPerdinComp extends Component
         $data->status = 'approved';
         if ($data->save()) {
             $this->dispatch('closeModal');
-            LivewireAlert::title('Pengajuan Perjalanan Dinas berhasil diterima!')->success()->show();
+            LivewireAlert::title('Pengajuan Perjalanan Dinas Berhasil Diterima!')->success()->show();
         } else {
-            LivewireAlert::title('Pengajuan Perjalanan Dinas gagal diterima!')->error()->show();
+            LivewireAlert::title('Pengajuan Perjalanan Dinas Gagal Diterima!')->error()->show();
         }
     }
 
@@ -50,9 +60,9 @@ class PengajuanPerdinComp extends Component
         $data->status = 'rejected';
         if ($data->save()) {
             $this->dispatch('closeModal');
-            LivewireAlert::title('Pengajuan Perjalanan Dinas berhasil ditolak!')->success()->show();
+            LivewireAlert::title('Pengajuan Perjalanan Dinas Berhasil Ditolak!')->success()->show();
         } else {
-            LivewireAlert::title('Pengajuan Perjalanan Dinas gagal ditolak!')->error()->show();
+            LivewireAlert::title('Pengajuan Perjalanan Dinas Gagal Ditolak!')->error()->show();
         }
     }
 
@@ -76,4 +86,10 @@ class PengajuanPerdinComp extends Component
             }
         }
     }
+    public function changeMode($mode)
+    {
+        $this->mode = $mode;
+        $this->resetPage();
+    }
+ 
 }
