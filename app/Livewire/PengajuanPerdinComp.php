@@ -15,7 +15,7 @@ class PengajuanPerdinComp extends Component
     public $mode = 'new';
     public $dailyAllowance;
     public $dailyAllowanceDesc;
-
+    protected $listeners = ['openModal'];
 
     public function render()
     {
@@ -36,10 +36,14 @@ class PengajuanPerdinComp extends Component
             $this->calculateAlowance();
         }
 
-
+        $this->dispatch('closeModal');
         return view('livewire.pengajuan-perdin-comp', compact('data', 'pendingCount'))->extends('layouts.master');
     }
 
+    public function openModal($id)
+    {
+        $this->showId = $id;
+    }
 
 
     public function approve($id)
@@ -47,11 +51,12 @@ class PengajuanPerdinComp extends Component
         $data = BusinessTrip::where('id', $id)->first();
         $data->status = 'approved';
         if ($data->save()) {
-            $this->dispatch('closeModal');
+
             LivewireAlert::title('Pengajuan Perjalanan Dinas Berhasil Diterima!')->success()->show();
         } else {
             LivewireAlert::title('Pengajuan Perjalanan Dinas Gagal Diterima!')->error()->show();
         }
+        $this->dispatch('closeModal');
     }
 
     public function reject($id)
@@ -59,11 +64,12 @@ class PengajuanPerdinComp extends Component
         $data = BusinessTrip::where('id', $id)->first();
         $data->status = 'rejected';
         if ($data->save()) {
-            $this->dispatch('closeModal');
+
             LivewireAlert::title('Pengajuan Perjalanan Dinas Berhasil Ditolak!')->success()->show();
         } else {
             LivewireAlert::title('Pengajuan Perjalanan Dinas Gagal Ditolak!')->error()->show();
         }
+        $this->dispatch('closeModal');
     }
 
     public function calculateAlowance()
@@ -91,5 +97,4 @@ class PengajuanPerdinComp extends Component
         $this->mode = $mode;
         $this->resetPage();
     }
- 
 }
