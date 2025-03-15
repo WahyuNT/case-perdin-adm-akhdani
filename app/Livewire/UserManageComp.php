@@ -14,13 +14,7 @@ class UserManageComp extends Component
     public $mode = 'view';
     public $username, $role, $password, $editId;
 
-    public function mount()
-    {
-        $role = session('role');
-        if ($role != 'admin') {
-            return redirect()->route('perdinku');
-        }
-    }
+
     public function render()
     {
         $data = User::all();

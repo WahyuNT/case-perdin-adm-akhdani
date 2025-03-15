@@ -15,13 +15,7 @@ class PengajuanPerdinComp extends Component
     public $dailyAllowance;
     public $dailyAllowanceDesc;
 
-    public function mount()
-    {
-        $role = session('role');
-        if ($role == 'pegawai') {
-            return redirect()->route('perdinku');
-        }
-    }
+
     public function render()
     {
         $pending = BusinessTrip::where('status', 'pending')->orderby('created_at', 'desc')->get();

@@ -123,7 +123,9 @@
                                 <span class="sr-only">Icon description</span>
                             </button>
                         </div>
-                        <h1 class="text-2xl font-bold text-center">Buat Akun</h1>
+                        <h1 class="text-2xl font-bold text-center">
+                            {{ $mode == 'edit' ? 'Edit' : 'Tambah' }} Kota {{ $city_name }}
+                        </h1>
                         <div class="">
 
                         </div>
@@ -133,18 +135,64 @@
 
                         <div class="w-1/2 pe-2">
 
-                            <div class="mb-3 w-full mt-3">
+                            <div class="mb-3 w-full mt-3 flex-col flex ">
+                                <label for="searchMaps" class="text-sm text-gray-500">Kota</label>
+                                <div class="relative flex w-full items-center">
 
-                                <x-input inputId="city_name" label="Nama Kota" type="text" wireModel="city_name"
-                                    placeholder="Masukkan Nama Kota" />
+                                    <div class="w-full">
+
+                                        <x-input typeWire="defer" inputId="city_name" label="" type="text"
+                                            wireModel="city_name" placeholder="Masukkan Nama Kota" />
+                                    </div>
+                                    <div class="absolute right-1 mt-1">
+                                        <button wire:click="searchMaps"
+                                            class="bg-white border-1 rounded-lg  cursor-pointer border-gray-300 text-black text-xs p-2 hover:bg-gray-100 active::bg-gray-500 active:scale-105  ">Cari</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3 w-full mt-3">
-                                <x-input inputId="province" label="Provinsi" type="text" wireModel="province"
-                                    placeholder="Masukkan Nama Provinsi" />
+                                <div wire:loading wire:target="selectMaps,searchMaps">
+                                    <div class="">
+
+                                        <span class="loader"></span>
+                                    </div>
+                                </div>
+                                <div class="columns-2 gap-3" wire:loading.remove>
+                                    @forelse ($listMaps as $item)
+                                        <div class="break-inside-avoid mb-3">
+                                            <div
+                                                class="flex items-center justify-between border rounded-lg space-x-1 p-2 border-gray-300">
+                                                <div class="flex items-center space-x-1">
+                                                    <i class="fa-solid fa-location-dot"></i>
+                                                    <span class="text-sm">{{ $item['display_name'] }}</span>
+                                                </div>
+                                                <button type="button"
+                                                    wire:click="selectMaps({{ $item['lat'] }}, {{ $item['lon'] }})"
+                                                    class="bg-white border border-gray-300 rounded-lg cursor-pointer text-black text-xs p-2 
+                                                       hover:bg-gray-100 active:bg-gray-500 active:scale-105">
+                                                    Pilih
+                                                </button>
+
+
+                                            </div>
+                                        </div>
+                                    @empty
+                                        @if ($listMapsError != null)
+                                            <span
+                                                class="text-red-500 text-xs text-center italic">{{ $listMapsError }}</span>
+                                        @endif
+                                    @endforelse
+                                </div>
+
+                            </div>
+
+                            <div class="mb-3 w-full mt-3">
+                                <x-input typeWire="defer" inputId="province" label="Provinsi" type="text"
+                                    wireModel="province" placeholder="Masukkan Nama Provinsi" />
                             </div>
                             <div class="mb-3 w-full mt-3">
-                                <x-input inputId="island" label="Pulau" type="text" wireModel="island"
-                                    placeholder="Masukkan Nama Pulau" />
+                                <x-input typeWire="defer" inputId="island" label="Pulau" type="text"
+                                    wireModel="island" placeholder="Masukkan Nama Pulau" />
                             </div>
                         </div>
                         <div class="w-1/2">
@@ -154,28 +202,28 @@
                             <div class="mb-3 w-full mt-3">
                                 <x-select selectId="is_abroad" label="Luar Negeri" wireModel="is_abroad"
                                     placeholder="Apakah Luar Negeri" :options="[
-                                        '0' => 'Ya',
-                                        '1' => 'Tidak',
+                                        '1' => 'Ya',
+                                        '0' => 'Tidak',
                                     ]" />
                             </div>
                             @if ($is_abroad == 1)
                                 <div class="mb-3 w-full mt-3">
 
 
-                                    <x-input inputId="country" label="Negara" type="text" wireModel="country"
-                                        placeholder="Masukkan Nama Negara" />
+                                    <x-input typeWire="defer" inputId="country" label="Negara" type="text"
+                                        wireModel="country" placeholder="Masukkan Nama Negara" />
                                 </div>
                             @endif
                             <div class="mb-3 w-full mt-3 flex">
                                 <div class="mb-3 w-full  pe-3">
 
 
-                                    <x-input inputId="latitude" label="Latitude" type="text" wireModel="latitude"
-                                        placeholder="Masukkan Latitude" />
+                                    <x-input typeWire="live" inputId="latitude" label="Latitude" type="text"
+                                        wireModel="latitude" placeholder="Masukkan Latitude" />
                                 </div>
 
                                 <div class="mb-3 w-full ">
-                                    <x-input inputId="longitude" label="Longitude" type="text"
+                                    <x-input typeWire="live" inputId="longitude" label="Longitude" type="text"
                                         wireModel="longitude" placeholder="Masukkan Longitude" />
                                 </div>
 

@@ -6,26 +6,71 @@ use App\Models\City;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Http;
 
 class CityMasterComp extends Component
 {
     public $confirmDelete = null;
-    public $mode = 'view';
+    public $mode = 'add';
     public $editId;
+    public $listMaps = [];
+    public $listMapsError = null;
     public $city_name, $latitude, $longitude, $province, $island, $is_abroad, $country;
 
-    public function mount()
-    {
-        $role = session('role');
-        if ($role == 'pegawai') {
-            return redirect()->route('perdinku');
-        }
-    }
+
+
     public function render()
     {
         $data = City::all();
+
+
+
         return view('livewire.city-master-comp', compact('data'))->extends('layouts.master');
+    }
+    public function searchMaps()
+    {
+        $this->reset('listMaps', 'listMapsError');
+        $responseApi = Http::withHeaders([
+            'User-Agent' => 'case-perdin'
+        ])->get('https://nominatim.openstreetmap.org/search', [
+            'q' => $this->city_name,
+            'format' => 'json',
+            'accept-language' => 'id'
+        ]);
+
+        if ($responseApi->successful()) {
+            $data = $responseApi->json();
+
+            if (!empty($data)) {
+                $this->listMaps = $data;
+            } else {
+                $this->listMapsError = 'Lokasi tidak ditemukan, silakan masukkan data secara manual.';
+            }
+        } else {
+            $this->listMapsError = 'Terjadi kesalahan saat mengambil data lokasi.';
+        }
+    }
+
+    public function selectMaps($latitude, $longitude)
+    {
+
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+
+        $responseApi = Http::withHeaders([
+            'User-Agent' => 'case-perdin'
+        ])->get('https://nominatim.openstreetmap.org/reverse', [
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'format' => 'json',
+            'accept-language' => 'id'
+        ]);
+
+        $this->island = $responseApi->json()['address']['region'] ?? null;
+        $this->country = $responseApi->json()['address']['country'] ?? null;
+        $this->province = $responseApi->json()['address']['state'] ?? null;
+        $this->is_abroad = ($responseApi->json()['address']['country'] ?? null) == 'Indonesia' ? 0 : 1;
+        $this->reset('listMaps', 'listMapsError');
     }
 
     public function storeCreate()
@@ -38,7 +83,7 @@ class CityMasterComp extends Component
             'island' => 'required',
             'is_abroad' => 'required',
         ];
-        
+
         if ($this->is_abroad == 1) {
             $rules['country'] = 'required';
         }

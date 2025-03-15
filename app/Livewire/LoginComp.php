@@ -15,13 +15,7 @@ class LoginComp extends Component
     public function mount()
     {
         if (session('username')) {
-            if (session('role') == 'admin') {
-                return redirect()->route('manajemen-user');
-            } elseif (session('role') == 'pegawai') {
-                return redirect()->route('perdinku');
-            } elseif (session('role') == 'sdm') {
-                return redirect()->route('pengajuan-perdin');
-            }
+            return redirect()->route('manajemen-user');
         }
     }
     public function render()

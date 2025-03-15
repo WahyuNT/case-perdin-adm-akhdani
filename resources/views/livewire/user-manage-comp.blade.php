@@ -106,8 +106,8 @@
                         </div>
                     </div>
                     <div class="mb-3 w-full mt-3">
-                        <x-input inputId="username" label="Username" type="text" wireModel="username"
-                            placeholder="Masukkan Username" />
+                        <x-input typeWire="defer" inputId="username" label="Username" type="text"
+                            wireModel="username" placeholder="Masukkan Username" />
                     </div>
                     <div class="mb-3 w-full">
                         <label for="password" class="text-sm text-gray-500">Password</label>
@@ -133,7 +133,7 @@
                     </div>
                     <div class="mb-3 w-full">
 
-                  
+
                         <x-select selectId="role" label="Role" wireModel="role" placeholder="Pilih Role"
                             :options="[
                                 'admin' => 'Admin',

@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/perdinku', PerdinComp::class)->name('perdinku');
-Route::get('/manajemen-user', UserManageComp::class)->name('manajemen-user');
-Route::get('/master-kota', CityMasterComp::class)->name('master-kota');
-Route::get('/pengajuan-perdin', PengajuanPerdinComp::class)->name('pengajuan-perdin');
+Route::get('/perdinku', PerdinComp::class)->name('perdinku')->middleware('role:admin,pegawai');
+Route::get('/manajemen-user', UserManageComp::class)->name('manajemen-user')->middleware('role:admin');
+Route::get('/master-kota', CityMasterComp::class)->name('master-kota')->middleware('role:admin,sdm');
+Route::get('/pengajuan-perdin', PengajuanPerdinComp::class)->name('pengajuan-perdin')->middleware('role:admin,sdm');
 
 
 Route::redirect('/', '/login')->name('index');
