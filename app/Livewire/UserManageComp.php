@@ -6,27 +6,37 @@ use App\Models\User;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\Hash;
+use Livewire\WithPagination;
 
 class UserManageComp extends Component
 {
+    use WithPagination;
     public $confirmDelete = null;
     public $passwordShow = 'password';
     public $mode = 'view';
-    public $username, $role, $password, $editId;
+    public $username, $role, $password, $editId,$isYou = false;
 
 
     public function render()
     {
-        $data = User::all();
+        $data = User::orderby('created_at', 'desc')->paginate(10);
         return view('livewire.user-manage-comp', compact('data'))->extends('layouts.master');
     }
     public function storeCreate()
     {
+        $messages = [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan, silakan pilih yang lain.',
+
+            'role.required' => 'Role wajib dipilih.',
+
+            'password.required' => 'Password wajib diisi.',
+        ];
         $this->validate([
             'username' => 'required|unique:users,username,',
             'role' => 'required',
             'password' => 'required',
-        ]);
+        ], $messages);
 
         $data = new User();
         $data->username = $this->username;
@@ -47,14 +57,23 @@ class UserManageComp extends Component
         $this->username = $data->username;
         $this->role = $data->role;
         $this->editId = $id;
-       
+        if($data->username == session('username')){
+            $this->isYou = true;
+        }
     }
     public function storeEdit()
     {
+        $messages = [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan, silakan pilih yang lain.',
+
+            'role.required' => 'Role wajib dipilih.',
+        ];
         $this->validate([
             'username' => 'required|unique:users,username,' . $this->editId,
             'role' => 'required',
-        ]);
+        ], $messages);
+
 
         $data = User::where('id', $this->editId)->first();
         $data->username = $this->username;
@@ -62,7 +81,10 @@ class UserManageComp extends Component
         if ($this->password) {
             $data->password = Hash::make($this->password);
         }
-    
+        if($this->isYou == 'true'){
+            session(['username' => $this->username]);
+        }
+
 
         if ($data->save()) {
             LivewireAlert::title('User berhasil diubah!')->success()->show();
@@ -86,6 +108,7 @@ class UserManageComp extends Component
         $this->username = '';
         $this->role = '';
         $this->password = '';
+        $this->isYou = false;
         $this->mode = 'view';
     }
 }

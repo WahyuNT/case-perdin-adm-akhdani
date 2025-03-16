@@ -8,9 +8,11 @@ use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Livewire\WithPagination;
 
 class PerdinComp extends Component
 {
+    use WithPagination;
     public $confirmDelete = null;
     public $departure_date = null;
     public $return_date = null;
@@ -25,7 +27,7 @@ class PerdinComp extends Component
     {
         $user = User::where('username', session('username'))->first();
         $city = City::all();
-        $data = BusinessTrip::where('user_id', $user->id)->orderby('created_at', 'asc')->get();
+        $data = BusinessTrip::where('user_id', $user->id)->orderby('created_at', 'asc')->paginate(10);
 
         return view('livewire.perdin-comp', compact('data', 'city'))->extends('layouts.master');
     }
@@ -36,10 +38,13 @@ class PerdinComp extends Component
     {
         if ($this->departure_date && $this->return_date) {
             if (Carbon::parse($this->return_date)->lt(Carbon::parse($this->departure_date))) {
-                $this->addError('return_date', 'The return date cannot be before the departure date.');
-                $this->return_date = null;
+                $this->addError('departure_date', 'Tanggal berangkat tidak boleh setlah tanggal kepulangan.');
+                $this->departure_date = null;
+                $this->trip_duration = null;
+
             } else {
                 $this->trip_duration = Carbon::parse($this->departure_date)->diffInDays(Carbon::parse($this->return_date)) + 1;
+                $this->resetValidation('departure_date');
             }
         }
     }
@@ -47,10 +52,12 @@ class PerdinComp extends Component
     {
         if ($this->departure_date && $this->return_date) {
             if (Carbon::parse($this->return_date)->lt(Carbon::parse($this->departure_date))) {
-                $this->addError('return_date', 'The return date cannot be before the departure date.');
+                $this->addError('return_date', 'Tanggal kembali tidak boleh sebelum tanggal keberangkatan.');
                 $this->return_date = null;
+                $this->trip_duration = null;
             } else {
                 $this->trip_duration = Carbon::parse($this->departure_date)->diffInDays(Carbon::parse($this->return_date)) + 1;
+                $this->resetValidation('return_date');
             }
         }
     }
@@ -137,8 +144,25 @@ class PerdinComp extends Component
             'destination_city_id' => 'required|integer',
             'purpose_destination' => 'required|string',
         ];
+        $messages = [
+            'departure_date.required' => 'Tanggal keberangkatan wajib diisi.',
+            'departure_date.date' => 'Format tanggal keberangkatan tidak valid.',
 
-        $this->validate($rules);
+            'return_date.required' => 'Tanggal kembali wajib diisi.',
+            'return_date.date' => 'Format tanggal kembali tidak valid.',
+            'return_date.after_or_equal' => 'Tanggal kembali harus setelah atau sama dengan tanggal keberangkatan.',
+
+            'origin_city_id.required' => 'Kota asal wajib dipilih.',
+            'origin_city_id.integer' => 'Kota asal tidak valid.',
+
+            'destination_city_id.required' => 'Kota tujuan wajib dipilih.',
+            'destination_city_id.integer' => 'Kota tujuan tidak valid.',
+
+            'purpose_destination.required' => 'Keterangan wajib diisi.',
+            'purpose_destination.string' => 'Keterangan harus berupa teks.',
+        ];
+
+        $this->validate($rules, $messages);
 
 
         $data = new BusinessTrip();

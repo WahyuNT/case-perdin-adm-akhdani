@@ -108,6 +108,9 @@
 
                                 </tr>
                             @empty
+                                <tr>
+                                    <td colspan="8" class="text-center py-4">Data tidak ditemukan</td>
+                                </tr>
                             @endforelse
 
                         </tbody>
@@ -136,7 +139,8 @@
                         <div class="w-1/2 pe-2">
 
                             <div class="mb-3 w-full mt-3 flex-col flex ">
-                                <label for="searchMaps" class="text-sm text-gray-500">Kota</label>
+                                <label for="searchMaps" class="text-sm text-gray-500">Kota<span
+                                    class="text-red-500 text-lg">*</span></label>
                                 <div class="relative flex w-full items-start">
 
                                     <div class="w-full">
@@ -150,14 +154,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3 w-full mt-3">
+                            <div  class="">
                                 <div wire:loading wire:target="selectMaps,searchMaps">
                                     <div class="">
 
                                         <span class="loader"></span>
                                     </div>
                                 </div>
-                                <div class="columns-2 gap-3" wire:loading.remove>
+                                <div class="columns-2 gap-3 " wire:loading.remove>
                                     @forelse ($listMaps as $item)
                                         <div class="break-inside-avoid mb-3">
                                             <div
@@ -186,7 +190,7 @@
 
                             </div>
 
-                            <div class="mb-3 w-full mt-3">
+                            <div class="mb-3 w-full mt-0">
                                 <x-input symbol="*" typeWire="defer" inputId="province" label="Provinsi"
                                     type="text" wireModel="province" placeholder="Masukkan Nama Provinsi" />
                             </div>

@@ -3,15 +3,15 @@
 
     <div class="bg-white w-full p-4 rounded-lg">
         <div class="w-full mx-auto">
-
+            <div class="flex justify-end">
+                <button data-modal-target="static-modal" data-modal-toggle="static-modal"
+                    class="border cursor-pointer border-blue-500 hover:bg-blue-700 hover:text-white text-blue-500 font-bold py-3 px-4 rounded-lg mb-4">
+                    + Tambah Perdin
+                </button>
+            </div>
 
             <div class="relative overflow-x-auto">
-                <div class="flex justify-end">
-                    <button data-modal-target="static-modal" data-modal-toggle="static-modal"
-                        class="border cursor-pointer border-blue-500 hover:bg-blue-700 hover:text-white text-blue-500 font-bold py-3 px-4 rounded-lg mb-4">
-                        + Tambah Perdin
-                    </button>
-                </div>
+
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-200 ">
                         <tr>
@@ -79,6 +79,11 @@
 
                     </tbody>
                 </table>
+
+            </div>
+            <div class="mt-3 ">
+
+                {{ $data->links('vendor.livewire.tailwind') }}
             </div>
 
 
@@ -181,7 +186,7 @@
                         @enderror
                     </div>
                     <div class="mb-3 w-full mt-3 flex justify-center">
-                        <div class="w-1/2 p-5 bg-gray-100 rounded-md">
+                        <div class="md:w-1/2 3/4 p-5 bg-gray-100 rounded-md">
                             <p class="text-center text-gray-600">Total Perjalanan Dinas</p>
                             <p class="text-center text-lg text-blue-600 font-bold">{{ $trip_duration }} Hari</p>
                         </div>

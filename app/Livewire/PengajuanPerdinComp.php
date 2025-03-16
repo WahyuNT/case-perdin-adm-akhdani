@@ -22,14 +22,14 @@ class PengajuanPerdinComp extends Component
         if ($this->mode == 'new') {
             $data = BusinessTrip::where('status', 'pending')
                 ->orderBy('created_at', 'desc')
-                ->paginate(8);
+                ->paginate(10);
         } else {
             $data = BusinessTrip::whereIn('status', ['approved', 'rejected'])
-                ->orderBy('created_at', 'desc')
-                ->paginate(8);
+                ->orderBy('updated_at', 'desc')
+                ->paginate(10);
         }
 
-        $pendingCount = $data->count();
+        $pendingCount = BusinessTrip::where('status', 'pending')->count();
 
         $this->detail = BusinessTrip::where('id', $this->showId)->first();
         if ($this->detail) {
