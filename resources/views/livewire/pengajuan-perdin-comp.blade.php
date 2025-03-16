@@ -1,12 +1,13 @@
 <div>
+    @section('title', 'Pengajuan Perdin')
     <h3 class="text-lg font-semibold mb-3">Pengajuan Perdin</h3>
 
     <div class="bg-white w-full p-4 rounded-lg">
         <div class="w-full mx-auto">
 
             <div class=" border-gray-200 w-[100%] md:w-[80%] sm:[w-80%] lg:w-[50%] xl:w-[30%] mb-4">
-                <div class="flex  justify-between md:justify-start md:gap-3"  id="myTab" data-tabs-toggle="#myTabContent"
-                    role="tablist">
+                <div class="flex  justify-between md:justify-start md:gap-3" id="myTab"
+                    data-tabs-toggle="#myTabContent" role="tablist">
 
                     <button wire:click="changeMode('new')"
                         class=" items-center w-full justify-center flex cursor-pointer rounded-t-lg py-4 hover:text-blue-500 hover:border-b-3 px-4 text-sm text-center @if ($mode === 'new') text-blue-500 font-semibold border-b-3 border-b-blue-500 @else text-gray-500 font-medium @endif">
@@ -184,7 +185,7 @@
                                 <div class="flex items-center">
                                     <div class="w-full">
                                         <div class="bg-gray-100 w-full p-2 rounded-lg border-1 border-gray-200 ">
-                                            {{ $detail->departure_date ?? '' }}
+                                            {{ $detail ? \Carbon\Carbon::parse($detail->departure_date)->translatedFormat('j F Y') : '' }}
                                         </div>
                                     </div>
                                     <div class="h-full py-3 flex justify-center items-center">
@@ -192,7 +193,7 @@
                                     </div>
                                     <div class="w-full">
                                         <div class="bg-gray-100 w-full p-2 rounded-lg border-1 border-gray-200 ">
-                                            {{ $detail->return_date ?? '' }}
+                                            {{ $detail ? \Carbon\Carbon::parse($detail->return_date)->translatedFormat('j F Y') : '' }}
                                         </div>
                                     </div>
                                 </div>
@@ -228,16 +229,17 @@
                                     <div class="w-1/3 text-center">
                                         <div class="flex flex-col">
                                             <p class="text-blue-500">{{ $detail->distance ?? '' }} KM</p>
-                                            <p class="text-sm text-gray-500">Rp.
-                                                {{ number_format($dailyAllowance ?? 0, 0, ',', '.') }} ,-</p>
+                                            <p class="text-sm text-gray-500">
+                                                {{ $currency }}{{ number_format($dailyAllowance ?? 0, 0, ',', '.') }},-</p>
                                             <p class="text-xs font-light text-gray-500">
                                                 ({{ $dailyAllowanceDesc ?? '' }})
                                             </p>
                                         </div>
                                     </div>
                                     <div class="w-1/3 text-center">
-                                        <p class="text-blue-500">Rp.
-                                            {{ number_format($detail->total_allowance ?? 0, 0, ',', '.') }},-</p>
+                                        <p class="text-blue-500">
+                                            {{ $currency }}{{ number_format(($detail->allowance ?? 0) * ($detail->trip_duration ?? 1), 0, ',', '.') }},-
+                                        </p>
                                     </div>
                                 </div>
                             </div>

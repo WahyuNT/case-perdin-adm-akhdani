@@ -21,13 +21,14 @@ class PerdinComp extends Component
     public $purpose_destination = null;
     public $trip_duration = null;
     public $distance = null;
-    public $total_allowance = null;
+    public $allowance = null;
+
 
     public function render()
     {
         $user = User::where('username', session('username'))->first();
         $city = City::all();
-        $data = BusinessTrip::where('user_id', $user->id)->orderby('created_at', 'asc')->paginate(10);
+        $data = BusinessTrip::where('user_id', $user->id)->orderby('created_at', 'desc')->paginate(10);
 
         return view('livewire.perdin-comp', compact('data', 'city'))->extends('layouts.master');
     }
@@ -41,7 +42,6 @@ class PerdinComp extends Component
                 $this->addError('departure_date', 'Tanggal berangkat tidak boleh setlah tanggal kepulangan.');
                 $this->departure_date = null;
                 $this->trip_duration = null;
-
             } else {
                 $this->trip_duration = Carbon::parse($this->departure_date)->diffInDays(Carbon::parse($this->return_date)) + 1;
                 $this->resetValidation('departure_date');
@@ -118,16 +118,16 @@ class PerdinComp extends Component
         $departure = City::where('id', $this->origin_city_id)->first();
         $return = City::where('id', $this->destination_city_id)->first();
         if ($departure->is_abroad == 1 || $return->is_abroad == 1) {
-            $this->total_allowance = 50;
+            $this->allowance = 50;
         } else {
             if ($this->distance <= 60) {
-                $this->total_allowance = 0;
+                $this->allowance = 0;
             } elseif (strtolower($departure->province) == strtolower($return->province)) {
-                $this->total_allowance = 200000;
+                $this->allowance = 200000;
             } elseif (strtolower($departure->island) == strtolower($return->island)) {
-                $this->total_allowance = 250000;
+                $this->allowance = 250000;
             } else {
-                $this->total_allowance = 300000;
+                $this->allowance = 300000;
             }
         }
     }
@@ -175,13 +175,14 @@ class PerdinComp extends Component
         $data->user_id = User::where('username', session('username'))->first()->id;
         $data->status = 'pending';
         $data->distance = $this->distance;
-        $data->total_allowance = $this->total_allowance;
+        $data->allowance = $this->allowance;
 
 
 
 
         if ($data->save()) {
-            $this->dispatch('closeModal');
+            $this->dispatch('close-modal');
+       
             LivewireAlert::title('Perjalanan Dinas berhasil dibuat!')->success()->show();
 
             $this->resetInput();

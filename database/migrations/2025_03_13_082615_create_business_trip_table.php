@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignId('destination_city_id')->constrained('city')->onDelete('cascade');
             $table->integer('trip_duration')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->integer('total_allowance')->nullable();
+            $table->integer('allowance')->nullable();
             $table->integer('distance')->nullable();
             $table->timestamps();
         });

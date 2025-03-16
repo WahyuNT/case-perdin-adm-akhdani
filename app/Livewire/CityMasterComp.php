@@ -7,9 +7,11 @@ use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Livewire\WithPagination;
 
 class CityMasterComp extends Component
 {
+    use WithPagination;
     public $confirmDelete = null;
     public $mode = 'view';
     public $editId;
@@ -37,7 +39,7 @@ class CityMasterComp extends Component
 
     public function render()
     {
-        $data = City::all();
+        $data = City::orderby('created_at', 'desc')->paginate('10');
         return view('livewire.city-master-comp', compact('data'))->extends('layouts.master');
     }
     public function searchMaps()
@@ -79,11 +81,14 @@ class CityMasterComp extends Component
             'accept-language' => 'id'
         ]);
 
+
+        $this->city_name = $responseApi->json()['address']['city'] ?? $responseApi->json()['address']['county'] ?? null;
         $this->island = $responseApi->json()['address']['region'] ?? null;
         $this->country = $responseApi->json()['address']['country'] ?? null;
         $this->province = $responseApi->json()['address']['state'] ?? null;
         $this->is_abroad = ($responseApi->json()['address']['country'] ?? null) == 'Indonesia' ? 0 : 1;
         $this->reset('listMaps', 'listMapsError');
+
         $this->resetValidation();
     }
 
@@ -106,10 +111,10 @@ class CityMasterComp extends Component
         $data->country = $this->country;
 
         if ($data->save()) {
-            $this->alert('success', 'City berhasil dibuat!');
+            $this->alert('success', 'Data Kota berhasil dibuat!');
             $this->resetInput();
         } else {
-            $this->alert('error', 'City gagal dibuat!');
+            $this->alert('error', 'Data Kota gagal dibuat!');
         }
     }
 

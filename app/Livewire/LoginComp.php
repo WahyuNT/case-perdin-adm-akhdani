@@ -50,4 +50,8 @@ class LoginComp extends Component
         session()->flash('error', 'Username atau password salah.');
         return back();
     }
+    public function forgot()
+    {
+        session()->flash('error', 'Silahkan menghubungi Admin.');
+    }
 }

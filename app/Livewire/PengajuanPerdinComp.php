@@ -15,7 +15,8 @@ class PengajuanPerdinComp extends Component
     public $mode = 'new';
     public $dailyAllowance;
     public $dailyAllowanceDesc;
-    protected $listeners = ['openModal'];
+ 
+    public $currency = 'IDR';
 
     public function render()
     {
@@ -77,8 +78,11 @@ class PengajuanPerdinComp extends Component
 
         if ($this->detail->originCity->is_abroad == 1 || $this->detail->destinationCity->is_abroad == 1) {
             $this->dailyAllowance = 50;
+            $this->dailyAllowanceDesc = '> 60 km, beda negara';
+            $this->currency = '$';
         } else {
             if ($this->detail->distance <= 60) {
+                $this->dailyAllowance = 0;
                 $this->dailyAllowanceDesc = '≤ 60 km';
             } elseif (strtolower($this->detail->originCity->province) == strtolower($this->detail->destinationCity->province)) {
                 $this->dailyAllowance = 200000;
@@ -90,6 +94,7 @@ class PengajuanPerdinComp extends Component
                 $this->dailyAllowance = 300000;
                 $this->dailyAllowanceDesc = '> 60 km, beda pulau';
             }
+            $this->currency = 'Rp ';
         }
     }
     public function changeMode($mode)

@@ -1,4 +1,5 @@
 <div>
+    @section('title', 'Master Kota')
     <h3 class="text-lg font-semibold mb-3">Master Kota</h3>
 
     <div class="bg-white w-full p-4 rounded-lg">
@@ -48,7 +49,7 @@
                                 <tr class="bg-white border-b  border-gray-200  ">
 
                                     <td class="px-6 py-4 align-top">
-                                        {{ $loop->iteration }}
+                                        {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}
                                     </td>
                                     <td class="px-6 py-4 align-top ">
                                         {{ $item->city_name }}
@@ -115,6 +116,10 @@
 
                         </tbody>
                     </table>
+                    <div class="mt-3 ">
+
+                        {{ $data->links('vendor.livewire.tailwind') }}
+                    </div>
                 </div>
             @else
                 <div class="div">
@@ -140,7 +145,7 @@
 
                             <div class="mb-3 w-full mt-3 flex-col flex ">
                                 <label for="searchMaps" class="text-sm text-gray-500">Kota<span
-                                    class="text-red-500 text-lg">*</span></label>
+                                        class="text-red-500 text-lg">*</span></label>
                                 <div class="relative flex w-full items-start">
 
                                     <div class="w-full">
@@ -154,7 +159,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div  class="">
+                            <div class="">
                                 <div wire:loading wire:target="selectMaps,searchMaps">
                                     <div class="">
 
@@ -253,7 +258,7 @@
                     <div class="flex justify-start">
                         <button wire:click="{{ $mode == 'edit' ? 'storeEdit' : 'storeCreate' }}"
                             class="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded-lg active:scale-110 transition duration-150 ease-in-out">
-                            {{ $mode == 'edit' ? 'Perbarui Akun' : 'Tambah Akun' }}
+                            {{ $mode == 'edit' ? 'Perbarui Kota' : 'Tambah Kota' }}
                         </button>
                     </div>
                 </div>

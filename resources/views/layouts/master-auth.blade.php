@@ -1,7 +1,8 @@
 <html>
 
 <head>
-    <title>App Name - @yield('title')</title>
+    <title>Perdin - @yield('title')</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/icon_ars.ico') }}">
     {{-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> --}}
     <script src="{{ asset('js/tailwind.js') }}"></script>
     @vite(['resource/css/app.css', 'resource/js/app.js'])

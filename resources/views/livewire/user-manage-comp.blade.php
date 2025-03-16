@@ -1,4 +1,5 @@
 <div>
+    @section('title', 'Manajemen User')
     <h3 class="text-lg font-semibold mb-3">Manajemen User</h3>
 
     <div class="bg-white w-full p-4 rounded-lg">
@@ -36,7 +37,7 @@
                                 <tr class="bg-white border-b  border-gray-200  ">
 
                                     <td class="px-6 py-4 align-top">
-                                        {{ $loop->iteration }}
+                                        {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}
                                     </td>
                                     <td class="px-6 py-4 align-top flex">
                                         {{ $item->username }} @if (session('username') == $item->username)
@@ -103,7 +104,8 @@
                                 <span class="sr-only">Icon description</span>
                             </button>
                         </div>
-                        <h1 class="text-2xl font-bold text-center"> {{ $mode == 'edit' ? 'Edit' : 'Tambah' }} User {{ $username }}</h1>
+                        <h1 class="text-2xl font-bold text-center"> {{ $mode == 'edit' ? 'Edit' : 'Tambah' }} User
+                            {{ $username }}</h1>
                         <div class="">
 
                         </div>
