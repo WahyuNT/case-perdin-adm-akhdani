@@ -1,10 +1,8 @@
 # Case Perdin Akhdani
 
-Aplikasi berbasis Laravel untuk mengelola perjalanan dinas (perdin) untuk Tes Akhdani.
+Aplikasi berbasis Laravel untuk mengelola perjalanan dinas (perdin) untuk Test Tahap 1 Akhdani.
 
-![Nama Gambar](https://lh5.googleusercontent.com/mYXVBf56xCYM4PwHF4uH5kipc_9V0t1L1AK2HBJ0-lWlaWVTbyeMkuOSWVotRy_MQji33FtpC-CRy3yIlQD0mEM=w16383)
-
-## 🔧Panduan Instalasi
+## 🔧 Panduan Instalasi
 
 Ikuti langkah-langkah berikut untuk menginstal proyek :
 
@@ -41,21 +39,26 @@ php artisan serve
 
 Kini anda dapat menjalankan aplikasi
 
-## 🔐Informasi Login Default
+## 🔐 Informasi Login Default
 Setelah menjalankan perintah php artisan migrate --seed, sistem secara otomatis akan membuat satu akun admin dengan kredensial berikut:
 ```bash
 Username: admin 
 Password: admin
 ```
 
-## 🔗Tautan
+## 🔗 Tautan
 
 - {url}/perdinku - Halaman untuk pegawai melihat data perjalanan dinas dan mengajukan perjalanan dinas baru
 - {url}/manajemen-user - Halaman untuk admin mengatur akun pengguna
 - {url}/master-kota - Halaman untuk divisi SDM untuk mengatur data kota
 - {url}/pengajuan-perdin - Halaman untuk divisi SDM mereview permintaan perjalanan dinas
 
-## 🖥️Persyaratan
+## ✨ Fitur 
+- Responsive untuk tampilan Mobile dan Desktop
+- Dapat mencari latitude dan longitude secara otomatis menggunakan API OpenStreetMap 
+- CRUD dapat dilakukan tanpa perlu me-refresh halaman
+
+## 🖥️ Persyaratan
 
 - PHP 8.0 atau lebih tinggi
 - Composer

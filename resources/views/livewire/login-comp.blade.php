@@ -2,7 +2,8 @@
     @section('title', 'Login')
     <div class="flex h-screen justify-center items-center bg-gray-50">
 
-        <div class="border w-1/4  px-4 py-10 rounded-xl shadow-sm border-gray-300 border-1 bg-white ">
+        <div
+            class="border w-[80%] sm:w-[60%] md:w-[35%] lg:w-[25%]  px-4 py-10 rounded-xl shadow-sm border-gray-300 border-1 bg-white ">
             <div class=" p-5 pb-0 flex justify-center">
                 <img class="w-[80%]" src="{{ asset('images/Logo_ars.png') }}" alt="">
             </div>

@@ -62,7 +62,7 @@ class CityMasterComp extends Component
                 $this->listMapsError = 'Lokasi tidak ditemukan, silakan masukkan data secara manual.';
             }
         } else {
-            $this->listMapsError = 'Terjadi kesalahan saat mengambil data lokasi.';
+            $this->listMapsError = 'Lokasi tidak ditemukan, silakan masukkan data secara manual.';
         }
     }
 

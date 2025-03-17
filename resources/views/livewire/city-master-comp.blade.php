@@ -139,9 +139,9 @@
                         </div>
                     </div>
 
-                    <div class="flex">
+                    <div class="flex flex-wrap justify-between">
 
-                        <div class="w-1/2 pe-2">
+                        <div class="w-[100%] lg:w-[49%] pe-0 lg:pe-2 lg:pe-2 ">
 
                             <div class="mb-3 w-full mt-3 flex-col flex ">
                                 <label for="searchMaps" class="text-sm text-gray-500">Kota<span
@@ -166,7 +166,7 @@
                                         <span class="loader"></span>
                                     </div>
                                 </div>
-                                <div class="columns-2 gap-3 " wire:loading.remove>
+                                <div class="  lg:columns-2 lg:gap-2" wire:loading.remove>
                                     @forelse ($listMaps as $item)
                                         <div class="break-inside-avoid mb-3">
                                             <div
@@ -187,8 +187,10 @@
                                         </div>
                                     @empty
                                         @if ($listMapsError != null)
-                                            <span
-                                                class="text-red-500 text-xs text-center italic">{{ $listMapsError }}</span>
+                                           
+                                                <span
+                                                    class="text-red-500 text-xs text-center italic">{{ $listMapsError }}</span>
+                                           
                                         @endif
                                     @endforelse
                                 </div>
@@ -204,7 +206,7 @@
                                     type="text" wireModel="island" placeholder="Masukkan Nama Pulau" />
                             </div>
                         </div>
-                        <div class="w-1/2">
+                        <div class="w-[100%] lg:w-[50%]">
 
 
 
@@ -240,7 +242,7 @@
                             @if ($latitude != null && $longitude != null)
                                 <div class="mb-3 w-full mt-3">
 
-                                    <iframe class="rounded-lg" width="600" height="300" frameborder="0"
+                                    <iframe class="rounded-lg w-full " height="300" frameborder="0"
                                         src="https://www.openstreetmap.org/export/embed.html?bbox={{ is_numeric($longitude) ? $longitude - 0.01 : 0 }},{{ is_numeric($latitude) ? $latitude - 0.01 : 0 }},
                                      {{ is_numeric($longitude) ? $longitude + 0.01 : 0 }},{{ is_numeric($latitude) ? $latitude + 0.01 : 0 }}&layer=mapnik&marker={{ is_numeric($latitude) ? $latitude : 0 }},{{ is_numeric($longitude) ? $longitude : 0 }}">
                                     </iframe>
